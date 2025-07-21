@@ -3,16 +3,29 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
-    public Transform groundCheck;
-    public LayerMask groundLayer;
+    [Header("movement")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float wallSlideSpeed = 2f;
+    [SerializeField] private float wallPushForce = 2f;
+
+    [Header("jump")]
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+
+    [Header("Wall Detection")]
+    [SerializeField] private Transform wallCheckLeft;
+    [SerializeField] private Transform wallCheckRight;
+    [SerializeField] private Vector2 wallCheckSize = new Vector2(0.1f, 0.5f);
 
     private Rigidbody2D rb;
     private InputSystem_Actions controls;
     private Vector2 moveInput;
     private bool isJumping;
     private bool isGrounded;
+    private bool isTouchingWallLeft;
+    private bool isTouchingWallRight;
 
     private void Awake()
     {
@@ -34,12 +47,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        
+        isTouchingWallLeft = Physics2D.OverlapBox(wallCheckLeft.position, wallCheckSize, 0f, groundLayer);
+        isTouchingWallRight = Physics2D.OverlapBox(wallCheckRight.position, wallCheckSize, 0f, groundLayer);
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        float horizontalMovement = moveInput.x * moveSpeed;
+        
+        if (isTouchingWallLeft && moveInput.x < 0)
+        {
+            horizontalMovement = 0;
+        }
+        else if (isTouchingWallRight && moveInput.x > 0)
+        {
+            horizontalMovement = 0;
+        }
+        
+        rb.linearVelocity = new Vector2(horizontalMovement, rb.linearVelocity.y);
+        
+        bool isWallSliding = (isTouchingWallLeft || isTouchingWallRight) && !isGrounded;
+        if (isWallSliding && rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -wallSlideSpeed));
+        }
 
         if (isJumping)
         {
@@ -50,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void AttemptJump()
     {
-        if (isGrounded)
+        if (isGrounded || isTouchingWallLeft || isTouchingWallRight)
         {
             isJumping = true;
         }
