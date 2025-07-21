@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float groundCheckRadius = 0.2f;
 
     [Header("Wall Detection")]
@@ -49,8 +50,9 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         
-        isTouchingWallLeft = Physics2D.OverlapBox(wallCheckLeft.position, wallCheckSize, 0f, groundLayer);
-        isTouchingWallRight = Physics2D.OverlapBox(wallCheckRight.position, wallCheckSize, 0f, groundLayer);
+        LayerMask combinedWallLayers = groundLayer | wallLayer;
+        isTouchingWallLeft = Physics2D.OverlapBox(wallCheckLeft.position, wallCheckSize, 0f, combinedWallLayers);
+        isTouchingWallRight = Physics2D.OverlapBox(wallCheckRight.position, wallCheckSize, 0f, combinedWallLayers);
     }
 
     private void FixedUpdate()
@@ -83,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void AttemptJump()
     {
-        if (isGrounded || isTouchingWallLeft || isTouchingWallRight)
+        if (isGrounded)
         {
             isJumping = true;
         }
