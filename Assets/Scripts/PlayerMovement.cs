@@ -15,6 +15,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float groundCheckRadius = 0.2f;
 
+    [Header("Respawn")]
+    [SerializeField] private LayerMask spikeLayer;
+    [SerializeField] private Vector2 spawnPoint = new Vector2(-6.5f, 3f);
+
     [Header("Wall Detection")]
     [SerializeField] private Transform wallCheckLeft;
     [SerializeField] private Transform wallCheckRight;
@@ -27,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     private bool isTouchingWallLeft;
     private bool isTouchingWallRight;
+    private bool isTouchingSpike;
 
     private void Awake()
     {
@@ -53,6 +58,13 @@ public class PlayerMovement : MonoBehaviour
         LayerMask combinedWallLayers = groundLayer | wallLayer;
         isTouchingWallLeft = Physics2D.OverlapBox(wallCheckLeft.position, wallCheckSize, 0f, combinedWallLayers);
         isTouchingWallRight = Physics2D.OverlapBox(wallCheckRight.position, wallCheckSize, 0f, combinedWallLayers);
+        
+        isTouchingSpike = Physics2D.OverlapCircle(transform.position, 0.3f, spikeLayer);
+        
+        if (isTouchingSpike)
+        {
+            Respawn();
+        }
     }
 
     private void FixedUpdate()
@@ -89,5 +101,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = true;
         }
+    }
+
+    private void Respawn()
+    {
+        transform.position = spawnPoint;
+
+        rb.linearVelocity = Vector2.zero;
+
+        isJumping = false;
     }
 }
