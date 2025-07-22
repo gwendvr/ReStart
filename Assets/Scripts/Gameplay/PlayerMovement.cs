@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -22,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheckLeft;
     [SerializeField] private Transform wallCheckRight;
     [SerializeField] private Vector2 wallCheckSize = new Vector2(0.1f, 0.5f);
+
+    [Header("UI")]
+    [SerializeField] private SceneFader sceneFader;
 
     private Rigidbody2D rb;
     private InputSystem_Actions controls;
@@ -104,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Respawn()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        sceneFader.FadeAndReload();
     }
 }
