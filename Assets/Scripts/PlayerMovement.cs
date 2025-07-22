@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float wallSlideSpeed = 2f;
-    [SerializeField] private float wallPushForce = 2f;
 
     [Header("jump")]
     [SerializeField] private float jumpForce = 10f;
