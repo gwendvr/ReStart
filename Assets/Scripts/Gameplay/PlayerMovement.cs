@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Respawn")]
     [SerializeField] private LayerMask spikeLayer;
-    [SerializeField] private Vector2 spawnPoint = new Vector2(-6.5f, 3f);
 
     [Header("Wall Detection")]
     [SerializeField] private Transform wallCheckLeft;
@@ -104,10 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Respawn()
     {
-        transform.position = spawnPoint;
-
-        rb.linearVelocity = Vector2.zero;
-
-        isJumping = false;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 }

@@ -1230,7 +1230,6 @@ GameObject:
   - component: {fileID: 971200437}
   - component: {fileID: 971200436}
   - component: {fileID: 971200435}
-  - component: {fileID: 971200438}
   m_Layer: 0
   m_Name: TP
   m_TagString: Untagged
@@ -1427,18 +1426,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &971200438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971200433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39fe6ad81a08f074eb61f7b433d584af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1034994098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,8 +1693,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 452444410}
   door: {fileID: 1034994103}
-  levelEndTrigger: {fileID: 971200438}
-  nextSceneName: Level2
+  levelEndTrigger: {fileID: 0}
+  nextSceneName: Level3
 --- !u!1 &1275860998
 GameObject:
   m_ObjectHideFlags: 0
