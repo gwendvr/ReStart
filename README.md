@@ -1,45 +1,82 @@
-# ReStart
+# Re:Start - Jeu de Plateforme 2D
 
-## Description
-ReStart est un jeu de plateforme 2D développé avec Unity dans le cadre d'un projet étudiant qui a pour ambition d'être réutilisé par la suite. Le joueur doit naviguer à travers des niveaux similaires remplis d'obstacles et de pièges pour atteindre l'objectif : la sortie.
+## Présentation du Projet
+**ReStart** est un projet de jeu de plateforme 2D développé avec Unity, démontrant l'implémentation de mécaniques de gameplay modernes et de systèmes techniques robustes. Ce projet met l'accent sur la qualité du code, l'architecture logicielle et l'expérience utilisateur.
 
-## Gameplay
+## Les 3C (Character, Camera, Controls)
 
-### Menu Principal
-- **Interface utilisateur** intuitive pour la navigation
-- **Accès aux différents niveaux** accessibles depuis le menu
+### Character (Personnage)
+- **Mouvement horizontal** : déplacement fluide avec gestion de la vélocité
+- **Saut** : mécanique de saut simple avec détection du sol
+- **Wall sliding** : glissement le long des murs verticaux
 
-### Contrôles
-- **Déplacement** : Flèches directionnelles : droite, gauche ou Q et D
-- **Saut** : Barre d'espace
+### Camera
+- **Caméra 2D statique** optimisée pour le gameplay de plateforme
 
-### Mécaniques de jeu
-- **Wall sliding** : glissement contrôlé le long des murs verticaux
-- **Système de respawn** : retour automatique au point de départ en cas de contact avec les pièges
-- **Détection précise** des collisions avec les sols, murs et obstacles
+### Controls (Contrôles)
+- **Input System Unity** moderne remplaçant l'ancien Input Manager
+- **Mappage des touches** : Q et D/Flèches droite et gauche + Espace pour le saut
 
-## Premier Niveau
+## Architecture Technique
 
-### Objectif
-Naviguer du point de départ jusqu'à la sortie en évitant les pièges.
+### Système de Mouvement (PlayerMovement.cs)
 
-### Obstacles
-- **Piques**
-- **Murs et plateformes**
+**Fonctionnalités clés :**
+- **Détection de collision avancée** : utilisation d'OverlapBox et OverlapCircle pour une précision maximale
+- **Système de LayerMask** : séparation logique des différents types de collisions
+- **Logique anti-collage** : `horizontalMovement = 0` quand collision détectée
+- **Wall sliding physique** : `Mathf.Max(rb.linearVelocity.y, -wallSlideSpeed)`
 
+### Système de Respawn
+- **Téléportation instantanée** vers point de départ défini
+- **Reset de vélocité** pour éviter les comportements indésirables
+- **Détection de collision avec pièges** via LayerMask dédié
 
-## Fonctionnalités techniques
-- **Input System Unity** pour une gestion moderne des contrôles
-- **Tilemap Colliders** pour la création de la map
-- **LayerMask** pour la détection sélective des collisions
-- **OverlapCircle/OverlapBox** pour une détection précise
-- **Unity UI (Canvas)** pour le système de menus
-- **Scene Management** pour la navigation entre les scènes
+### Gestion des Scènes et UI
+- **Scene Management** : navigation fluide entre menu principal et niveaux
+- **Unity UI (Canvas)** : interface utilisateur responsive
+- **Système de sélection de niveaux** : accès modulaire aux différents niveaux
 
-## Développement
-Projet développé en C# avec Unity Engine, mettant l'accent sur :
-- La fluidité du mouvement du joueur
-- La résolution des problèmes de collision
-- L'implémentation de mécaniques de plateforme modernes
-- Le développement d'une interface utilisateur complète
-- La gestion des scènes et de la navigation
+## Défis Techniques Résolus
+
+### 1. Problème de Wall Sticking
+**Problème** : Le joueur restait "collé" aux murs en maintenant la direction
+**Solution** : Implémentation d'une logique de détection qui annule le mouvement horizontal quand une collision murale est détectée
+
+### 2. Détection de Collision Tilemap
+**Problème** : Les Tilemap Colliders 2D posaient des défis pour la détection précise
+**Solution** : Remplacement des Raycasts par OverlapBox pour une détection plus fiable
+
+### 3. Input System Integration
+**Problème** : Migration de l'ancien Input Manager vers le nouveau Input System
+**Solution** : Utilisation d'événements callbacks pour une architecture découplée
+
+## Technologies et Outils
+
+### Moteur et Frameworks
+- **Unity 6000.0.51f1** - Moteur de jeu principal
+- **C# .NET** - Langage de programmation
+- **Input System Package** - Gestion moderne des inputs
+
+### Systèmes de Physique
+- **Rigidbody2D** - Physique réaliste du personnage
+- **Collider2D** - Détection de collisions
+- **Physics2D API** - Raycasting et détection de chevauchement
+
+### Outils de Développement
+- **Tilemap System** - Création rapide de niveaux
+- **Scene Management** - Navigation entre scènes
+- **LayerMask System** - Organisation logique des collisions
+
+## Métriques de Performance
+- **Détection de collision** optimisée avec appels Physics2D minimaux
+- **Update/FixedUpdate** séparés pour logique et physique
+- **Memory allocation** minimale grâce aux Vector2 réutilisables
+
+## Évolutivité du Code
+- **Architecture modulaire** permettant l'ajout facile de nouveaux niveaux
+- **Système de LayerMask** extensible pour nouveaux types d'obstacles
+- **Pattern Observer** via Input System pour découplage logique
+
+## Conclusion
+Ce projet démontre une maîtrise des concepts fondamentaux du développement de jeux 2D, de l'architecture logicielle propre, et de la résolution de problèmes techniques complexes. L'accent mis sur les 3C garantit une expérience utilisateur de qualité professionnelle.

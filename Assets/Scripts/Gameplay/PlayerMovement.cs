@@ -16,12 +16,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Respawn")]
     [SerializeField] private LayerMask spikeLayer;
-    [SerializeField] private Vector2 spawnPoint = new Vector2(-6.5f, 3f);
 
     [Header("Wall Detection")]
     [SerializeField] private Transform wallCheckLeft;
     [SerializeField] private Transform wallCheckRight;
     [SerializeField] private Vector2 wallCheckSize = new Vector2(0.1f, 0.5f);
+
+    [Header("UI")]
+    [SerializeField] private SceneFader sceneFader;
 
     private Rigidbody2D rb;
     private InputSystem_Actions controls;
@@ -104,10 +106,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Respawn()
     {
-        transform.position = spawnPoint;
-
-        rb.linearVelocity = Vector2.zero;
-
-        isJumping = false;
+        sceneFader.FadeAndReload();
     }
 }
