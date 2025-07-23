@@ -19,6 +19,11 @@
 
 ## Architecture Technique
 
+### Design Patterns Implémentés
+- **Pattern Command** : encapsulation des actions (ouverture de portes, mécaniques spécialisées)
+- **Architecture modulaire** : système extensible pour mécaniques de niveaux spécifiques
+- **Découplage logique** : séparation entre input handling et logique métier
+
 ### Système de Mouvement (PlayerMovement.cs)
 
 **Fonctionnalités clés :**
@@ -51,6 +56,10 @@
 **Problème** : Migration de l'ancien Input Manager vers le nouveau Input System
 **Solution** : Utilisation d'événements callbacks pour une architecture découplée
 
+### 4. Mécaniques de Niveau Spécialisées
+**Problème** : Implémentation de contraintes de gameplay uniques (une seule action, timers automatiques)
+**Solution** : Utilisation du pattern Command avec `TimedOpenDoorCommand` pour des mécaniques temporelles complexes
+
 ## Technologies et Outils
 
 ### Moteur et Frameworks
@@ -68,6 +77,10 @@
 - **Scene Management** - Navigation entre scènes
 - **LayerMask System** - Organisation logique des collisions
 
+### Patterns de Conception
+- **Command Pattern** - Encapsulation des actions et découplage input/logique
+- **TimedOpenDoorCommand** - Mécaniques temporelles pour niveaux spécialisés
+
 ## Métriques de Performance
 - **Détection de collision** optimisée avec appels Physics2D minimaux
 - **Update/FixedUpdate** séparés pour logique et physique
@@ -77,6 +90,19 @@
 - **Architecture modulaire** permettant l'ajout facile de nouveaux niveaux
 - **Système de LayerMask** extensible pour nouveaux types d'obstacles
 - **Pattern Observer** via Input System pour découplage logique
+- **Pattern Command** pour mécaniques de niveaux spécialisées
+
+## Niveaux et Mécaniques
+
+### Niveau 1 - Introduction
+- **Mécaniques de base** : mouvement libre, saut, wall sliding
+- **Apprentissage des contrôles** : familiarisation avec les 3C
+
+### Niveau 2 - "Une Seule Action"
+- **Contrainte unique** : une seule action autorisée avant reset
+- **Mécaniques temporelles** : timer d'ouverture de porte (5 secondes)
+- **Adaptation dynamique** : modification de vitesse contextuelle (moveSpeed = 4)
+- **Challenge de précision** : timing et positionnement critiques
 
 ## Conclusion
 Ce projet démontre une maîtrise des concepts fondamentaux du développement de jeux 2D, de l'architecture logicielle propre, et de la résolution de problèmes techniques complexes. L'accent mis sur les 3C garantit une expérience utilisateur de qualité professionnelle.
