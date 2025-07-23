@@ -14,10 +14,10 @@ public class LevelRulesManager : MonoBehaviour
     private void Awake()
     {
         if (playerMovement == null)
-            playerMovement = FindObjectOfType<PlayerMovement>();
+            playerMovement = FindFirstObjectByType<PlayerMovement>();
 
         if (sceneFader == null)
-            sceneFader = FindObjectOfType<SceneFader>();
+            sceneFader = FindFirstObjectByType<SceneFader>();
 
         ruleMap = new Dictionary<int, ILevelRule>()
         {
