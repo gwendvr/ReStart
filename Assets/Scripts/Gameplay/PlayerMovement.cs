@@ -33,35 +33,67 @@ public class PlayerMovement : MonoBehaviour
     private bool isTouchingWallLeft;
     private bool isTouchingWallRight;
     private bool isTouchingSpike;
+    private bool canMove = true;
+    private System.Action<InputAction.CallbackContext> movePerformedHandler;
+    private System.Action<InputAction.CallbackContext> moveCanceledHandler;
+    private System.Action<InputAction.CallbackContext> jumpHandler;
 
     private void Awake()
     {
-        controls = new InputSystem_Actions();
+        Debug.Log("PlayerMovement Awake");
+        controls = InputManager.Controls;
 
-        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        movePerformedHandler = ctx => moveInput = ctx.ReadValue<Vector2>();
+        moveCanceledHandler = ctx => moveInput = Vector2.zero;
+        jumpHandler = ctx => AttemptJump();
+    }
+    private void OnEnable()
+    {
+        Debug.Log("PlayerMovement OnEnable");
 
-        controls.Player.Jump.performed += ctx => AttemptJump();
+        if (controls != null)
+        {
+            controls.Player.Move.performed += movePerformedHandler;
+            controls.Player.Move.canceled += moveCanceledHandler;
+            controls.Player.Jump.performed += jumpHandler;
+        }
+        else
+        {
+            Debug.LogWarning("controls est null dans OnEnable !");
+        }
     }
 
-    private void OnEnable() => controls.Player.Enable();
-    private void OnDisable() => controls.Player.Disable();
+    private void OnDisable()
+    {
+        controls.Player.Move.performed -= movePerformedHandler;
+        controls.Player.Move.canceled -= moveCanceledHandler;
+        controls.Player.Jump.performed -= jumpHandler;
+    }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        if (controls == null)
+        {
+            controls = InputManager.Controls;
+        }
+
+        controls.Player.Move.performed += movePerformedHandler;
+        controls.Player.Move.canceled += moveCanceledHandler;
+        controls.Player.Jump.performed += jumpHandler;
     }
 
     private void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        
+
         LayerMask combinedWallLayers = groundLayer | wallLayer;
         isTouchingWallLeft = Physics2D.OverlapBox(wallCheckLeft.position, wallCheckSize, 0f, combinedWallLayers);
         isTouchingWallRight = Physics2D.OverlapBox(wallCheckRight.position, wallCheckSize, 0f, combinedWallLayers);
-        
+
         isTouchingSpike = Physics2D.OverlapCircle(transform.position, 0.3f, spikeLayer);
-        
+
         if (isTouchingSpike)
         {
             Respawn();
@@ -70,8 +102,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!canMove)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            return;
+        }
+
         float horizontalMovement = moveInput.x * moveSpeed;
-        
+
         if (isTouchingWallLeft && moveInput.x < 0)
         {
             horizontalMovement = 0;
@@ -80,9 +118,9 @@ public class PlayerMovement : MonoBehaviour
         {
             horizontalMovement = 0;
         }
-        
+
         rb.linearVelocity = new Vector2(horizontalMovement, rb.linearVelocity.y);
-        
+
         bool isWallSliding = (isTouchingWallLeft || isTouchingWallRight) && !isGrounded;
         if (isWallSliding && rb.linearVelocity.y < 0)
         {
@@ -107,5 +145,15 @@ public class PlayerMovement : MonoBehaviour
     private void Respawn()
     {
         sceneFader.FadeAndReload();
+    }
+
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
     }
 }
