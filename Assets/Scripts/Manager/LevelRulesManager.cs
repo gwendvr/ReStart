@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 
 public class LevelRulesManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class LevelRulesManager : MonoBehaviour
 
     private Dictionary<int, ILevelRule> ruleMap;
 
-    private void Awake()
+    private IEnumerator Start()
     {
         if (playerMovement == null)
             playerMovement = FindFirstObjectByType<PlayerMovement>();
@@ -19,15 +20,15 @@ public class LevelRulesManager : MonoBehaviour
         if (sceneFader == null)
             sceneFader = FindFirstObjectByType<SceneFader>();
 
+        while (InputManager.Controls == null)
+            yield return null;
+
         ruleMap = new Dictionary<int, ILevelRule>()
         {
             { 1, new NormalRule() },
             { 2, new OneActionRule(InputManager.Controls) }
         };
-    }
 
-    private void Start()
-    {
         int index = SceneManager.GetActiveScene().buildIndex;
 
         currentRule = ruleMap.ContainsKey(index) ? ruleMap[index] : new NormalRule();
