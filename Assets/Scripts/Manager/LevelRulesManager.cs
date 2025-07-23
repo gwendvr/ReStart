@@ -7,6 +7,9 @@ public class LevelRulesManager : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private SceneFader sceneFader;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private Door door;
 
     private ILevelRule currentRule;
 
@@ -26,7 +29,8 @@ public class LevelRulesManager : MonoBehaviour
         ruleMap = new Dictionary<int, ILevelRule>()
         {
             { 1, new NormalRule() },
-            { 2, new OneActionRule(InputManager.Controls) }
+            { 2, new OneActionRule(InputManager.Controls) },
+            { 3, new SpawnButtonRule(buttonPrefab, spawnPoints, door) }
         };
 
         int index = SceneManager.GetActiveScene().buildIndex;

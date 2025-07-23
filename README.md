@@ -60,6 +60,10 @@
 **Problème** : Implémentation de contraintes de gameplay uniques (une seule action, timers automatiques)
 **Solution** : Utilisation du pattern Command avec `TimedOpenDoorCommand` pour des mécaniques temporelles complexes
 
+### 5. Système de Spawn Dynamique d'Objets
+**Problème** : Génération procédurale d'éléments de gameplay en cours de partie
+**Solution** : Implémentation de `SpawnButtonRule` avec gestion dynamique d'objets et séquencement d'événements
+
 ## Technologies et Outils
 
 ### Moteur et Frameworks
@@ -80,6 +84,7 @@
 ### Patterns de Conception
 - **Command Pattern** - Encapsulation des actions et découplage input/logique
 - **TimedOpenDoorCommand** - Mécaniques temporelles pour niveaux spécialisés
+- **SpawnButtonCommand** - Système de génération dynamique d'objets de gameplay
 
 ## Métriques de Performance
 - **Détection de collision** optimisée avec appels Physics2D minimaux
@@ -103,6 +108,12 @@
 - **Mécaniques temporelles** : timer d'ouverture de porte (5 secondes)
 - **Adaptation dynamique** : modification de vitesse contextuelle (moveSpeed = 4)
 - **Challenge de précision** : timing et positionnement critiques
+
+### Niveau 3 - "Spawn Button Sequence"
+- **Génération dynamique** : apparition séquentielle de boutons interactifs
+- **Progression par étapes** : chaque bouton activé fait apparaître le suivant
+- **Limite de séquence** : maximum 5 boutons dans la chaîne d'activation
+- **Récompense finale** : ouverture automatique de la porte après séquence complète
 
 ## Conclusion
 Ce projet démontre une maîtrise des concepts fondamentaux du développement de jeux 2D, de l'architecture logicielle propre, et de la résolution de problèmes techniques complexes. L'accent mis sur les 3C garantit une expérience utilisateur de qualité professionnelle.
