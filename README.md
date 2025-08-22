@@ -115,5 +115,9 @@
 - **Limite de séquence** : maximum 5 boutons dans la chaîne d'activation
 - **Récompense finale** : ouverture automatique de la porte après séquence complète
 
+### Niveau 4 - "Disappearing Traps"
+- **Obstacles disparus** : pièges qui disparaissent pendant le niveau
+- **Planification stratégique** : le joueur doit anticiper la disparition des obstacles
+
 ## Conclusion
 Ce projet démontre une maîtrise des concepts fondamentaux du développement de jeux 2D, de l'architecture logicielle propre, et de la résolution de problèmes techniques complexes. L'accent mis sur les 3C garantit une expérience utilisateur de qualité professionnelle.
